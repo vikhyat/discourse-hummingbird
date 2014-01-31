@@ -1,0 +1,159 @@
+<!-- Hummingbird Header -->
+<nav class="navbar navbar-inverse hb-nav navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <!-- Toggle navigation button for small devices -->
+      <button class="navbar-toggle collapsed" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a class="navbar-brand" href="http://hummingbird.me/"><img src="http://cl.ly/image/2I3Y2w0A1W2g/logo.png" width="119px" height="20px"></a>
+
+    </div> <!-- .navbar-header -->
+
+    <div class="navbar-collapse navbar-ex1-collapse collapse" style="height: 1px;">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            Dashboard <b class="caret"></b>
+          </a>
+          {{#if currentUser}}
+            <ul class="dropdown-menu left-nav-section">
+              <li><a href="http://hummingbird.me/users/{{unbound currentUser.username}}">Profile</a></li>
+              <li><a href="http://hummingbird.me/users/{{unbound currentUser.username}}/watchlist">Library</a></li>
+              <li><a href="http://hummingbird.me/recommendations">Recommendations</a></li>
+            </ul>
+          {{/if}}
+        </li>
+
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown">
+            Explore <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu left-nav-section">
+            <li><a href="http://hummingbird.me/anime">What's Trending</a></li>
+            <li><a href="http://hummingbird.me/anime/filter/all">Explore Anime</a></li>
+            <li><a href="http://hummingbird.me/anime/upcoming">Upcoming</a></li>
+          </ul>
+        </li>
+
+        <li><a href="/">Community</a></li>
+      </ul>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Discourse Header -->
+
+<div class='container'>
+  <div class='contents clearfix'>
+
+    {{home-logo minimized=showExtraInfo}}
+
+    {{#if showExtraInfo}}
+      <div class="extra-info-wrapper">
+        <div class="extra-info">
+          {{#if showFavoriteButton}}
+            <a {{bindAttr class=":star topic.starred:starred"}} {{action toggleStar}} href='#' {{bindAttr title="topic.favoriteTooltip"}}></a>
+          {{/if}}
+          <h1>
+          {{boundCategoryLink topic.category}}
+          {{#if topic.details.loaded}}
+            {{topicStatus topic=topic}}
+            <a class='topic-link' href='{{unbound topic.url}}'>{{{topic.fancy_title}}}</a>
+          {{else}}
+            {{#if topic.errorLoading}}
+              {{topic.errorTitle}}
+            {{else}}
+              {{i18n topic.loading}}
+            {{/if}}
+          {{/if}}
+          </h1>
+        </div>
+      </div>
+    {{/if}}
+
+    <div class='panel clearfix'>
+      {{#unless showExtraInfo}}
+        <div class='current-username'>
+          {{#if currentUser}}
+            <span class='username'><a {{bindAttr href="currentUser.path"}}>{{currentUser.displayName}}</a></span>
+          {{else}}
+            <button {{action showLogin}} class='btn btn-primary btn-small'>{{i18n log_in}}</button>
+          {{/if}}
+        </div>
+      {{/unless}}
+      <ul class='icons clearfix'>
+        <li class='notifications'>
+          {{#if currentUser}}
+            <a class='icon' href="#" {{action showNotifications target="view"}} data-notifications="notifications-dropdown" id='user-notifications' title='{{i18n notifications.title}}'><i class='fa fa-comment'></i></a>
+            {{#if currentUser.unread_notifications}}
+              <a href='#' class='badge-notification unread-notifications'>{{currentUser.unread_notifications}}</a>
+            {{/if}}
+            {{#if currentUser.unread_private_messages}}
+              <a href='#' class='badge-notification unread-private-messages'>{{currentUser.unread_private_messages}}</a>
+            {{/if}}
+          {{else}}
+            <a class='icon' href="#" {{action showLogin}} title='{{i18n notifications.title}}'><i class='fa fa-comment'></i></a>
+          {{/if}}
+        </li>
+        <li>
+          {{#if Discourse.loginRequired}}
+            <a class='icon expand' href='#' {{action showLogin}}>
+              <i class='fa fa-search'></i>
+            </a>
+          {{else}}
+            <a class='icon expand'
+               href='#'
+               data-dropdown="search-dropdown"
+               title='{{i18n search.title}}'>
+               <i class='fa fa-search'></i>
+            </a>
+          {{/if}}
+        </li>
+        <li class='categories dropdown'>
+          {{#if Discourse.loginRequired}}
+            <a class='icon'
+               href="#"
+               {{action showLogin}}>
+               <i class='fa fa-bars'></i>
+            </a>
+          {{else}}
+            <a class='icon'
+               data-dropdown="site-map-dropdown"
+               data-render="renderSiteMap"
+               href="#"
+               title='{{i18n site_map}}'
+               id="site-map">
+               <i class='fa fa-bars'></i>
+            </a>
+          {{/if}}
+          {{#if currentUser.site_flagged_posts_count}}
+            <a href='/admin/flags/active' title='{{i18n notifications.total_flagged}}' class='badge-notification flagged-posts'>{{currentUser.site_flagged_posts_count}}</a>
+          {{/if}}
+        </li>
+        <li class='current-user'>
+          {{#if currentUser}}
+            {{#titledLinkTo 'userActivity.index' currentUser titleKey="current_user" class="icon"}}{{boundAvatar currentUser imageSize="medium" }}{{/titledLinkTo}}
+          {{else}}
+            <div class="icon not-logged-in-avatar" {{action showLogin}}><i class='fa fa-user'></i></div>
+          {{/if}}
+        </li>
+      </ul>
+
+      {{render search}}
+
+      {{render notifications notifications}}
+
+      {{#if view.renderSiteMap}}
+        {{render siteMap}}
+      {{/if}}
+
+    </div>
+  </div>
+</div>
+
+

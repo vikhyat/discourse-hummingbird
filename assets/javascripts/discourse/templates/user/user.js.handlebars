@@ -1,0 +1,170 @@
+{{#unless loading}}
+  {{!-- Hummingbird Profile Stuff --}}
+  <div class="user-cover">
+    <img {{bindAttr src="hummingbird.coverImage"}} {{bindAttr class=":cover-photo hummingbird.loaded::cover-photo-loading"}}>
+    <div class="cover-overlay"></div>
+  </div>
+  <div class="container relative">
+    <div class="row">
+      <div class="user-cover-options">
+        <div class="col-md-10 user-wrapper">
+          <div class="col-sm-2 col-md-2 user-avatar clearfix">
+            <div class="large-avatar">
+              {{boundAvatar model imageSize="huge"}}
+              {{#if hummingbird.loaded}}
+                <div class="online-box">
+                  <div {{bindAttr class=":online-indicator hummingbird.online:online:offline"}}></div>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-10 account-info">
+            <h1 class="username">{{username}}</h1>
+            <ul class="inline-list clearfix">
+              <li>
+                <a href="javascript:void(0)" title="Coming soon!">
+                  <i class="icon-exchange">&nbsp;</i>
+                  Compare
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" title="Coming soon!">
+                  <i class="icon-heart-empty">&nbsp;</i>
+                  Suggest
+                </a>
+              </li>
+              <li>
+                <a href="javascript:void(0)" title="Coming soon!">
+                  <i class="icon-envelope-alt">&nbsp;</i>
+                  Message
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {{#if currentUser}}
+          {{#unless viewingSelf}}
+            {{#if hummingbird.loaded}}
+              <button class="btn btn-default btn-lg follow-button" type="button">
+                {{#if hummingbird.following}}
+                  Unfollow
+                {{else}}
+                  Follow
+                {{/if}}
+              </button>
+            {{/if}}
+          {{/unless}}
+        {{/if}}
+      </div> <!-- .user-cover-options -->
+    </div>
+  </div>
+  <div class="profile-navigation">
+    <div class="container">
+      <div class="row">
+        <ul class="inline-list clearfix">
+          <li class="nav-link">
+            <a href="http://hummingbird.me/users/{{unbound username}}/feed">Activity Feed</a>
+          </li>
+          <li class="nav-link">
+            <a href="http://hummingbird.me/users/{{unbound username}}/watchlist">Library</a>
+          </li>
+          <li class="nav-link active">
+            {{#linkTo 'userActivity'}}Forums{{/linkTo}}
+          </li>
+          <li class="nav-link dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">More</a>
+            <ul class="dropdown-menu profile-nav-drop">
+              <li><a href="http://hummingbird.me/users/{{unbound username}}/favorite_anime">Favorite Anime</a></li>
+              <li><a href="http://hummingbird.me/users/{{unbound username}}/followers">Followers</a></li>
+              <li><a href="http://hummingbird.me/users/{{unbound username}}/following">Following</a></li>
+              {{#if viewingSelf}}
+                <li><a href="http://hummingbird.me/users/edit">Preferences</a></li>
+              {{/if}}
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {{ad-unit}}
+  {{!-- End Hummingbird Profile Stuff --}}
+
+  <div class="container">
+
+    <section class='user-navigation'>
+
+      <ul class='action-list nav-stacked'>
+        {{discourse-activity-filter count=statsCountNonPM user=model userActionType=userActionType indexStream=indexStream}}
+        {{#each stat in statsExcludingPms}}
+          {{discourse-activity-filter content=stat user=model userActionType=userActionType indexStream=indexStream}}
+        {{/each}}
+      </ul>
+
+      {{#if canSeePrivateMessages}}
+        <h3><i class='fa fa-envelope'></i> {{i18n user.private_messages}}</h3>
+        <ul class='action-list nav-stacked'>
+          <li {{bindAttr class=":noGlyph privateMessagesActive:active"}}>
+            {{#link-to 'userPrivateMessages.index' model}}{{i18n user.messages.all}}<span class='fa fa-chevron-right'></span>{{/link-to}}
+          </li>
+          <li {{bindAttr class=":noGlyph privateMessagesMineActive:active"}}>
+            {{#link-to 'userPrivateMessages.mine' model}}{{i18n user.messages.mine}}<span class='fa fa-chevron-right'></span>{{/link-to}}
+          </li>
+          <li {{bindAttr class=":noGlyph privateMessagesUnreadActive:active"}}>
+            {{#link-to 'userPrivateMessages.unread' model}}{{i18n user.messages.unread}}<span class='fa fa-chevron-right'></span>{{/link-to}}
+          </li>
+        </ul>
+      {{/if}}
+
+      {{#if can_edit}}
+        <div style='margin-top: 10px'>
+          <button class='btn' data-not-implemented='true' disabled title="{{i18n not_implemented}}"><i class='fa fa-download'></i>{{i18n user.download_archive}}</button>
+        </div>
+      {{/if}}
+    </section>
+
+    <section class='user-main'>
+      <section {{bindAttr class="collapsedInfo :about"}}>
+
+        {{#if isSuspended}}
+        <div class='details'>
+          <div class='primary'>
+            <div class='suspended'>
+              <i class='fa fa-ban'></i>
+              <b>{{i18n user.suspended_notice date="suspendedTillDate"}}</b><br/>
+              <b>{{i18n user.suspended_reason}}</b> {{suspend_reason}}
+            </div>
+          </div>
+          <div style='clear: both'></div>
+        </div>
+        {{/if}}
+
+        <section class='controls'>
+          {{#if can_send_private_message_to_user}}
+            <button class='btn btn-primary' {{action composePrivateMessage}}>
+              <i class='fa fa-envelope'></i>
+              {{i18n user.private_message}}
+            </button>
+          {{/if}}
+
+          {{#if viewingSelf}}
+            <button {{action "logout"}} class='btn btn-danger right'><i class='fa fa-sign-out'></i>{{i18n user.log_out}}</button>
+          {{/if}}
+
+          {{#if currentUser.staff}}
+            <a {{bindAttr href="adminPath"}} class='btn right'><i class="fa fa-wrench"></i>{{i18n admin.user.show_admin_profile}}</a>
+          {{/if}}
+
+          {{#if can_edit}}
+            {{#link-to 'preferences' class="btn right"}}<i class='fa fa-cog'></i>{{i18n user.preferences}}{{/link-to}}
+          {{/if}}
+
+          {{#link-to 'user.invited' class="btn right"}}<i class='fa fa-envelope-o'></i>{{i18n user.invited.title}}{{/link-to}}
+
+        </section>
+      </section>
+
+      {{outlet userOutlet}}
+    </section>
+
+  </div>
+{{/unless}}
