@@ -1,5 +1,7 @@
-Discourse.LoginView.reopen({
-  render: function() {
-    window.location = "http://hummingbird.me/users/sign_in";
+Discourse.ApplicationRoute.reopen({
+  actions: {
+    showLogin: function() {
+      window.location = "http://hummingbird.me/users/sign_in";
+    }
   }
 });
