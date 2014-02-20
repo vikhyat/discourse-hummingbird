@@ -47,7 +47,6 @@
 </nav>
 
 <!-- Main Discourse Header -->
-
 <div class='container'>
   <div class='contents clearfix'>
 
@@ -56,10 +55,13 @@
     {{#if showExtraInfo}}
       <div class="extra-info-wrapper">
         <div class="extra-info">
-          {{#if showFavoriteButton}}
-            <a {{bindAttr class=":star topic.starred:starred"}} {{action toggleStar}} href='#' {{bindAttr title="topic.favoriteTooltip"}}></a>
+          {{#if showStarButton}}
+            <a {{bind-attr class=":star topic.starred:starred"}} {{action toggleStar}} href='#' {{bind-attr title="topic.starTooltip"}}></a>
           {{/if}}
           <h1>
+          {{#if topic.category.parentCategory}}
+            {{boundCategoryLink topic.category.parentCategory}}
+          {{/if}}
           {{boundCategoryLink topic.category}}
           {{#if topic.details.loaded}}
             {{topicStatus topic=topic}}
@@ -80,7 +82,7 @@
       {{#unless showExtraInfo}}
         <div class='current-username'>
           {{#if currentUser}}
-            <span class='username'><a {{bindAttr href="currentUser.path"}}>{{currentUser.displayName}}</a></span>
+            <span class='username'><a {{bind-attr href="currentUser.path"}}>{{currentUser.displayName}}</a></span>
           {{else}}
             <button {{action showLogin}} class='btn btn-primary btn-small'>{{i18n log_in}}</button>
           {{/if}}
@@ -102,11 +104,12 @@
         </li>
         <li>
           {{#if Discourse.loginRequired}}
-            <a class='icon expand' href='#' {{action showLogin}}>
+            <a id='search-button' class='icon expand' href='#' {{action showLogin}}>
               <i class='fa fa-search'></i>
             </a>
           {{else}}
-            <a class='icon expand'
+            <a id='search-button'
+               class='icon expand'
                href='#'
                data-dropdown="search-dropdown"
                title='{{i18n search.title}}'>
@@ -135,11 +138,18 @@
             <a href='/admin/flags/active' title='{{i18n notifications.total_flagged}}' class='badge-notification flagged-posts'>{{currentUser.site_flagged_posts_count}}</a>
           {{/if}}
         </li>
-        <li class='current-user'>
+        <li class='current-user dropdown'>
           {{#if currentUser}}
-            {{#titledLinkTo 'userActivity.index' currentUser titleKey="current_user" class="icon"}}{{boundAvatar currentUser imageSize="medium" }}{{/titledLinkTo}}
+            <a class='icon'
+               data-dropdown="user-dropdown"
+               data-render="renderUserDropdown"
+               href="#"
+               title='{{i18n user.avatar.title}}'
+               id="current-user">
+                 {{boundAvatar currentUser imageSize="medium" }}
+            </a>
           {{else}}
-            <div class="icon not-logged-in-avatar" {{action showLogin}}><i class='fa fa-user'></i></div>
+            <div class="icon not-logged-in-avatar" {{action showLogin}}><i class='fa fa-user' title='{{i18n not_logged_in_user}}'></i></div>
           {{/if}}
         </li>
       </ul>
@@ -152,8 +162,11 @@
         {{render siteMap}}
       {{/if}}
 
+      {{ render userDropdown }}
+
     </div>
   </div>
 </div>
+
 
 
