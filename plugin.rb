@@ -25,3 +25,34 @@ register_asset "javascripts/discourse/templates/post.js.handlebars"
 register_asset "javascripts/discourse/templates/embedded_post.js.handlebars"
 register_asset "javascripts/discourse/templates/header.js.handlebars"
 register_asset "javascripts/discourse/templates/user/user.js.handlebars"
+
+### Account Sync
+load File.expand_path("../sync.rb", __FILE__)
+SyncPlugin = SyncPlugin
+after_initialize do
+  module SyncPlugin
+    class Engine < ::Rails::Engine
+      engine_name "sync_plugin"
+      isolate_namespace SyncPlugin
+    end
+
+    class SyncController < ActionController::Base
+      def sync
+        if params[:secret] == "a2256cbca0c5ba922da96e394527a0a6959912d03152230"
+          HummingbirdCurrentUserProvider.create_or_update_user(params[:auth_token])
+          render text: "Hello world"
+        else
+          render text: "Goodbye world"
+        end
+      end
+    end
+  end
+
+  SyncPlugin::Engine.routes.draw do
+    get '/' => 'sync#sync'
+  end
+
+  Discourse::Application.routes.append do
+    mount ::SyncPlugin::Engine, at: '/sync'
+  end
+end
