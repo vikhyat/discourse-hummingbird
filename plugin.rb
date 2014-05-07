@@ -21,8 +21,6 @@ load File.expand_path('../onebox.rb', __FILE__)
 register_asset "javascripts/custom_profile.js"
 
 ### Template Customization
-register_asset "javascripts/discourse/templates/post.js.handlebars"
-register_asset "javascripts/discourse/templates/embedded_post.js.handlebars"
 register_asset "javascripts/discourse/templates/header.js.handlebars"
 register_asset "javascripts/discourse/templates/user/user.js.handlebars"
 
