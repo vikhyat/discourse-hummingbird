@@ -87,7 +87,7 @@ class HummingbirdCurrentUserProvider < Auth::CurrentUserProvider
       user = User.where(auth_token: auth_token).first || User.where(username_lower: user_data["name"].downcase).first || User.where(email: user_data["email"]).first || User.new
       user.username = user.name = user_data["name"]
       user.email = user_data["email"]
-      user.uploaded_avatar_template = user_data["avatar"].gsub(/users\/avatars\/(\d+\/\d+\/\d+)\/\w+/, "users/avatars/\\1/{size}")
+      #user.uploaded_avatar_template = user_data["avatar"].gsub(/users\/avatars\/(\d+\/\d+\/\d+)\/\w+/, "users/avatars/\\1/{size}")
       user.activate
       user.auth_token = auth_token
       user.save!
