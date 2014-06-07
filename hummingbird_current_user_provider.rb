@@ -1,3 +1,5 @@
+require_dependency 'avatar_upload_service'
+
 class HummingbirdCurrentUserProvider < Auth::CurrentUserProvider
   COOKIE_NAME       = "auth_token"
   CURRENT_USER_KEY  = "_DISCOURSE_CURRENT_USER"
@@ -87,9 +89,15 @@ class HummingbirdCurrentUserProvider < Auth::CurrentUserProvider
       user = User.where(auth_token: auth_token).first || User.where(username_lower: user_data["name"].downcase).first || User.where(email: user_data["email"]).first || User.new
       user.username = user.name = user_data["name"]
       user.email = user_data["email"]
-      #user.uploaded_avatar_template = user_data["avatar"].gsub(/users\/avatars\/(\d+\/\d+\/\d+)\/\w+/, "users/avatars/\\1/{size}")
       user.activate
       user.auth_token = auth_token
+      user.save!
+
+      # Upload avatar
+      avatar_url = user_data["avatar"]
+      image = AvatarUploadService.new(avatar_url, :url)
+      upload = Upload.create_for(user.id, image.file, image.filename, image.filesize)
+      user.uploaded_avatar_id = upload.id
       user.save!
     end
     user

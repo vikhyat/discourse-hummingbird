@@ -5,10 +5,6 @@
 
 plugins_dir = File.expand_path(File.dirname(__FILE__))
 
-### Custom avatars
-eval File.read("#{plugins_dir}/custom_avatar.rb")
-register_asset "javascripts/custom_avatars.js", :server_side
-
 ### Hummingbird login
 load File.expand_path("../hummingbird_current_user_provider.rb", __FILE__)
 Discourse.current_user_provider = HummingbirdCurrentUserProvider
