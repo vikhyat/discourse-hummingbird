@@ -17,13 +17,7 @@ Discourse.Utilities.avatarUrl = function(template, size) {
 
 Handlebars.registerHelper('avatar', function(user, options) {
   if (typeof user === 'string') {
-    if (user.length > 0) {
-      user = Ember.Handlebars.get(this, user, options);
-    } else if (typeof Ember.Handlebars.get(this, "user", options) !== "undefined") {
-      user = Ember.Handlebars.get(this, "user", options);
-    } else {
-      user = this;
-    }
+    user = Ember.Handlebars.get(this, user, options);
   }
 
   if (user) {
@@ -41,7 +35,7 @@ Handlebars.registerHelper('avatar', function(user, options) {
       }
     }
 
-    var avatarTemplate = Em.get(user, 'avatar_template');
+    var avatarTemplate = Em.get(user, 'avatar_template') || Em.get(user, 'user.avatar_template');
 
     return new Handlebars.SafeString(Discourse.Utilities.avatarImg({
       size: options.hash.imageSize,
