@@ -13,6 +13,10 @@ register_asset "javascripts/custom_auth.js"
 ### Onebox
 load File.expand_path('../onebox.rb', __FILE__)
 
+### Custom avatars
+eval File.read("#{plugins_dir}/custom_avatar.rb")
+register_asset "javascripts/custom_avatar.js"
+
 ### Load profile data from Hummingbird
 register_asset "javascripts/custom_profile.js"
 
