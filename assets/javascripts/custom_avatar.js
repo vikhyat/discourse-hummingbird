@@ -14,7 +14,13 @@ Discourse.Utilities.avatarUrl = function(template, size) {
 
 Handlebars.registerHelper('avatar', function(user, options) {
   if (typeof user === 'string') {
-    user = Ember.Handlebars.get(this, "user", options);
+    if (user.length > 0) {
+      user = Ember.Handlebars.get(this, user, options);
+    } else if (typeof Ember.Handlebars.get(this, "user", options) !== "undefined") {
+      user = Ember.Handlebars.get(this, "user", options);
+    } else {
+      user = this;
+    }
   }
 
   if (user) {
@@ -41,7 +47,7 @@ Handlebars.registerHelper('avatar', function(user, options) {
       avatarTemplate: avatarTemplate
     }));
   } else {
-    return 'http://hummingbird.me/assets/processing-avatar.jpg';
+    return '';
   }
 });
 
