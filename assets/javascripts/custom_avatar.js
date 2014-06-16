@@ -3,7 +3,10 @@ Discourse.Utilities.avatarUrl = function(template, size) {
   if (size <= 50) {
     template = template.replace(/\.[a-zA-Z]+\?/, '.jpg?');
   }
-  if (size <= 25) {
+  if (size === 45) {
+    // Post template
+    return template.replace(/\{size\}/g, 'thumb');
+  } else if (size <= 25) {
     return template.replace(/\{size\}/g, 'small');
   } else if (size <= 50) {
     return template.replace(/\{size\}/g, 'thumb_small');
