@@ -41,7 +41,7 @@ Handlebars.registerHelper('avatar', function(user, options) {
       avatarTemplate: avatarTemplate
     }));
   } else {
-    return '';
+    return 'http://hummingbird.me/assets/processing-avatar.jpg';
   }
 });
 
