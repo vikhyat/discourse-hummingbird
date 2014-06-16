@@ -1,6 +1,6 @@
 Discourse.Utilities.avatarUrl = function(template, size) {
   if (!template) { return ""; }
-  if (size <= 50) {
+  if (size <= 50 && size != 45) {
     template = template.replace(/\.[a-zA-Z]+\?/, '.jpg?');
   }
   if (size === 45) {
