@@ -1,7 +1,7 @@
 {{#unless loading}}
   {{!-- Hummingbird Profile Stuff --}}
   <div class="user-cover">
-    <img {{bindAttr src="hummingbird.coverImage"}} {{bindAttr class=":cover-photo hummingbird.loaded::cover-photo-loading"}}>
+    <img {{bind-attr src="hummingbird.coverImage"}} {{bind-attr class=":cover-photo hummingbird.loaded::cover-photo-loading"}}>
     <div class="cover-overlay"></div>
   </div>
   <div class="container relative">
@@ -13,7 +13,7 @@
               {{bound-avatar model "huge"}}
               {{#if hummingbird.loaded}}
                 <div class="online-box">
-                  <div {{bindAttr class=":online-indicator hummingbird.online:online:offline"}}></div>
+                  <div {{bind-attr class=":online-indicator hummingbird.online:online:offline"}}></div>
                 </div>
               {{/if}}
             </div>
@@ -69,7 +69,7 @@
             <a href="http://hummingbird.me/users/{{unbound username}}/library">Library</a>
           </li>
           <li class="nav-link active">
-            {{#linkTo 'userActivity'}}Forums{{/linkTo}}
+            {{#link-to 'userActivity'}}Forums{{/link-to}}
           </li>
           <li class="nav-link dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">More</a>
@@ -102,13 +102,13 @@
       {{#if canSeePrivateMessages}}
         <h3><i class='fa fa-envelope'></i> {{i18n user.private_messages}}</h3>
         <ul class='action-list nav-stacked'>
-          <li {{bindAttr class=":noGlyph privateMessagesActive:active"}}>
+          <li {{bind-attr class=":noGlyph privateMessagesActive:active"}}>
             {{#link-to 'userPrivateMessages.index' model}}{{i18n user.messages.all}}<span class='fa fa-chevron-right'></span>{{/link-to}}
           </li>
-          <li {{bindAttr class=":noGlyph privateMessagesMineActive:active"}}>
+          <li {{bind-attr class=":noGlyph privateMessagesMineActive:active"}}>
             {{#link-to 'userPrivateMessages.mine' model}}{{i18n user.messages.mine}}<span class='fa fa-chevron-right'></span>{{/link-to}}
           </li>
-          <li {{bindAttr class=":noGlyph privateMessagesUnreadActive:active"}}>
+          <li {{bind-attr class=":noGlyph privateMessagesUnreadActive:active"}}>
             {{#link-to 'userPrivateMessages.unread' model}}{{i18n user.messages.unread}}<span class='fa fa-chevron-right'></span>{{/link-to}}
           </li>
         </ul>
@@ -122,7 +122,7 @@
     </section>
 
     <section class='user-main'>
-      <section {{bindAttr class="collapsedInfo :about"}}>
+      <section {{bind-attr class="collapsedInfo :about"}}>
 
         {{#if isSuspended}}
         <div class='details'>
@@ -150,7 +150,7 @@
           {{/if}}
 
           {{#if currentUser.staff}}
-            <a {{bindAttr href="adminPath"}} class='btn right'><i class="fa fa-wrench"></i>{{i18n admin.user.show_admin_profile}}</a>
+            <a {{bind-attr href="adminPath"}} class='btn right'><i class="fa fa-wrench"></i>{{i18n admin.user.show_admin_profile}}</a>
           {{/if}}
 
           {{#if can_edit}}
