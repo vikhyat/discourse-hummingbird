@@ -54,20 +54,3 @@ after_initialize do
     mount ::SyncPlugin::Engine, at: '/sync'
   end
 end
-
-# Temporary, pending https://github.com/discourse/discourse/pull/2425
-after_initialize do
-  NotificationsController.class_eval do
-    def index
-      notifications = Notification.recent_report(current_user, 10)
-
-      unless params.has_key?(:silent)
-        current_user.saw_notification_id(notifications.first.id) if notifications.present?
-        current_user.reload
-        current_user.publish_notifications_state
-      end
-
-      render_serialized(notifications, NotificationSerializer)
-    end
-  end
-end
