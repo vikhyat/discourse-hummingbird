@@ -1,7 +1,7 @@
 after_initialize do
   User.class_eval do
     def avatar_template
-      self.avatar_template || "http://hummingbird.me/assets/processing-avatar.jpg"
+      self.read_attribute(:avatar_template) || "http://hummingbird.me/assets/processing-avatar.jpg"
     end
 
     def self.letter_avatar_template(username)
