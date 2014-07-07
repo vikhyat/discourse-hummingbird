@@ -93,5 +93,7 @@ class HummingbirdCurrentUserProvider < Auth::CurrentUserProvider
       user.save!
     end
     user
+  rescue
+    nil
   end
 end
