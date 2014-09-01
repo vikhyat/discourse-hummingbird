@@ -8,7 +8,7 @@ module Onebox
 
       def url
         slug = @url.match(/https?:\/\/hummingbird\.me\/anime\/(.+)/)[1]
-        "http://hummingbird.me/api/v1/anime/#{slug}"
+        "https://hummingbird.me/api/v1/anime/#{slug}"
       end
 
       def to_html

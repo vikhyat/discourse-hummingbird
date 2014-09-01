@@ -81,7 +81,7 @@ class HummingbirdCurrentUserProvider < Auth::CurrentUserProvider
   end
 
   def self.create_or_update_user(auth_token)
-    user_data = JSON.parse open("http://hummingbird.me/api/v1/users/me?auth_token=#{auth_token}").read
+    user_data = JSON.parse open("https://hummingbird.me/api/v1/users/me?auth_token=#{auth_token}").read
     user = nil
     if user_data["name"]
       user = User.where(auth_token: auth_token).first || User.where(username_lower: user_data["name"].downcase).first || User.where(email: user_data["email"]).first || User.new

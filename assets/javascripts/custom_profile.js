@@ -2,7 +2,7 @@ Discourse.UserRoute.reopen({
   afterModel: function() {
     user = this.modelFor('user');
     user.setProperties({"hummingbird": {"loaded": false}});
-    $.ajax("http://hummingbird.me/api/v1/users/" + user.get('username'), {
+    $.ajax("https://hummingbird.me/api/v1/users/" + user.get('username'), {
       type: "GET",
       contentType: "application/json; charset=utf-8",
       success: function(data) {
