@@ -54,3 +54,12 @@ after_initialize do
     mount ::SyncPlugin::Engine, at: '/sync'
   end
 end
+
+### Use forum-static.hummingbird.me cache.
+after_initialize do
+  FileStore::S3Store.class_eval do
+    def absolute_base_url
+      "//forum-static.hummingbird.me"
+    end
+  end
+end
